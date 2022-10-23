@@ -6,6 +6,9 @@ import ramesh.springboot.blog.payload_dto.PostDto;
 import ramesh.springboot.blog.repository.PostRepository;
 import ramesh.springboot.blog.service.PostService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -19,20 +22,45 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto createPost(PostDto postDto) {
         //convert DTO to entity
+//        Post post = new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
+        Post post = mapToEntity(postDto);
+        Post newPost = postRepository.save(post);
+
+        //convert newPost to PostDto
+//        PostDto postResponse = new PostDto();
+//        postResponse.setId(newPost.getId());
+//        postResponse.setContent(newPost.getContent());
+//        postResponse.setDescription(newPost.getDescription());
+//        postResponse.setTitle(newPost.getTitle());
+        PostDto postResponse = mapToDto(newPost);
+        return postResponse;
+    }
+
+    @Override
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+//        return posts.stream().map(this::mapToDto).collect(Collectors.toList());
+        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+
+    }
+
+    private PostDto mapToDto(Post post){
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setContent(post.getContent());
+        postDto.setTitle(post.getTitle());
+        postDto.setDescription(post.getDescription());
+        return postDto;
+    }
+    private Post mapToEntity(PostDto postDto){
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
-
-        Post newPost = postRepository.save(post);
-
-        //convert newPost to PostDto
-        PostDto postResponse = new PostDto();
-        postResponse.setId(newPost.getId());
-        postResponse.setContent(newPost.getContent());
-        postResponse.setDescription(newPost.getDescription());
-        postResponse.setTitle(newPost.getTitle());
-
-        return postResponse;
+        return post;
     }
+
 }
