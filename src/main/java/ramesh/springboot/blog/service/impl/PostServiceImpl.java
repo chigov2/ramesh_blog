@@ -2,6 +2,7 @@ package ramesh.springboot.blog.service.impl;
 
 import org.springframework.stereotype.Service;
 import ramesh.springboot.blog.entity.Post;
+import ramesh.springboot.blog.exception.ResourceNotFoundException;
 import ramesh.springboot.blog.payload_dto.PostDto;
 import ramesh.springboot.blog.repository.PostRepository;
 import ramesh.springboot.blog.service.PostService;
@@ -45,6 +46,13 @@ public class PostServiceImpl implements PostService {
 //        return posts.stream().map(this::mapToDto).collect(Collectors.toList());
         return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public PostDto getPostById(long id) {
+        Post post = postRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Post","id",id));
+        return mapToDto(post);
     }
 
     private PostDto mapToDto(Post post){
