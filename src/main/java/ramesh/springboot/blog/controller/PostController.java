@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ramesh.springboot.blog.entity.Post;
 import ramesh.springboot.blog.payload_dto.PostDto;
+import ramesh.springboot.blog.payload_dto.PostResponse;
 import ramesh.springboot.blog.service.PostService;
+import ramesh.springboot.blog.utils.AppConstants;
 
 import java.util.List;
 
@@ -24,8 +26,12 @@ public class PostController {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
     @GetMapping
-    public List<PostDto> getAllPosts(){
-        return postService.getAllPosts();
+    public PostResponse getAllPosts(
+            @RequestParam(required = false,defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,value = "pageNo") int pageNo,
+            @RequestParam(required = false,defaultValue = AppConstants.DEFAULT_PAGE_SIZE,value = "pageSize") int pageSize,
+            @RequestParam(required = false,defaultValue = AppConstants.DEFAULT_SORT_BY, value ="sortBy") String sortBy,
+            @RequestParam(required = false,defaultValue = AppConstants.DEFAULT_SORT_DIR, value ="sortDir") String sortDir){
+        return postService.getAllPosts(pageNo,pageSize,sortBy,sortDir);
     }
     @GetMapping("/{id}")
     public  ResponseEntity<PostDto> getPostById(@PathVariable(name="id") long id){
