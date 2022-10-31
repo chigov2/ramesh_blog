@@ -9,6 +9,9 @@ import ramesh.springboot.blog.repository.CommentRepository;
 import ramesh.springboot.blog.repository.PostRepository;
 import ramesh.springboot.blog.service.CommentService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
@@ -29,6 +32,12 @@ public class CommentServiceImpl implements CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         return mapToDTO(savedComment);
+    }
+
+    @Override
+    public List<CommentDto> getAllCommentsByPostId(long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
     }
 
     private CommentDto mapToDTO(Comment comment){

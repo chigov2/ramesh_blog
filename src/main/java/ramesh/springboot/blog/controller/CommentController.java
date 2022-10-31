@@ -8,6 +8,8 @@ import ramesh.springboot.blog.repository.CommentRepository;
 import ramesh.springboot.blog.service.CommentService;
 import ramesh.springboot.blog.service.impl.CommentServiceImpl;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/")
 public class CommentController {
@@ -23,5 +25,11 @@ public class CommentController {
     public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") long postId,
                                                     @RequestBody CommentDto commentDto){
         return  new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("posts/{postId}/comments")
+    public List<CommentDto> getAllCommentsByPostId(@PathVariable(value = "postId") long postId){
+
+        return commentService.getAllCommentsByPostId(postId);
     }
 }
