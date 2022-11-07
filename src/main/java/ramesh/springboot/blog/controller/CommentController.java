@@ -7,6 +7,7 @@ import ramesh.springboot.blog.payload_dto.CommentDto;
 import ramesh.springboot.blog.repository.CommentRepository;
 import ramesh.springboot.blog.service.CommentService;
 import ramesh.springboot.blog.service.impl.CommentServiceImpl;
+import ramesh.springboot.blog.utils.AppConstants;
 
 import java.util.List;
 
@@ -48,6 +49,15 @@ public class CommentController {
     ){
         CommentDto updatedComment = commentService.updateComment(postId,commentId,commentRequest);
         return new ResponseEntity<>(updatedComment,HttpStatus.OK);
+
+    }
+@DeleteMapping("posts/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deleteComment(
+        @PathVariable(value = "postId") long postId,
+        @PathVariable(value = "commentId") long commentId){
+        commentService.deleteComment(postId,commentId);
+
+        return new ResponseEntity<>(AppConstants.DEFAULT_DELETE_COMMENT,HttpStatus.OK);
 
     }
 }
