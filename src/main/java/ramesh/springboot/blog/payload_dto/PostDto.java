@@ -32,4 +32,5 @@ public class PostDto {
     private String content;
 //    @ApiModelProperty(value = "Blog post comments")
 //    private Set<CommentDto> comments;
+    private Set<CommentDto> comments;
 }
