@@ -10,6 +10,7 @@ import ramesh.springboot.blog.payload_dto.PostResponse;
 import ramesh.springboot.blog.service.PostService;
 import ramesh.springboot.blog.utils.AppConstants;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
     @GetMapping
@@ -39,7 +40,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable(name="id") long id){
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name="id") long id){
         PostDto postResponse = postService.updatePost(postDto,id);
         return new ResponseEntity<>(postResponse,HttpStatus.OK);
     }
