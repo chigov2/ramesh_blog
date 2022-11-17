@@ -9,6 +9,7 @@ import ramesh.springboot.blog.service.CommentService;
 import ramesh.springboot.blog.service.impl.CommentServiceImpl;
 import ramesh.springboot.blog.utils.AppConstants;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class CommentController {
 
     @PostMapping("posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") long postId,
-                                                    @RequestBody CommentDto commentDto){
+                                                    @Valid @RequestBody CommentDto commentDto){
         return  new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
     }
 
@@ -45,7 +46,7 @@ public class CommentController {
     public ResponseEntity<CommentDto> updateComment(
             @PathVariable(value = "postId") long postId,
             @PathVariable(value = "commentId") long commentId,
-            @RequestBody CommentDto commentRequest
+            @Valid @RequestBody CommentDto commentRequest
     ){
         CommentDto updatedComment = commentService.updateComment(postId,commentId,commentRequest);
         return new ResponseEntity<>(updatedComment,HttpStatus.OK);
